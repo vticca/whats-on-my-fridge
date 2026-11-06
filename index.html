@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2efe8">
+  <title>what's on my fridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" class="svg-filter"><filter id="handmadeCeramic" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="2" seed="17" result="clayGrain"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="clayGrain" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="softlyUneven"></feDisplacementMap><feColorMatrix in="clayGrain" type="saturate" values="0" result="monoGrain"></feColorMatrix><feComponentTransfer in="monoGrain" result="subtleGrain"><feFuncA type="table" tableValues="0 .055"></feFuncA></feComponentTransfer><feBlend in="softlyUneven" in2="subtleGrain" mode="multiply"></feBlend></filter></svg>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">what's on my fridge</span></div>
+      <div class="top-actions editor-only"><button class="button" id="previewBtn">방문자 화면 보기 ↗</button><button class="button dark" id="shareBtn">저장하고 공유</button></div>
+      <div class="top-actions visitor-actions"><button class="button" id="editCopyBtn">나도 꾸미기</button></div>
+    </header>
+    <div class="preview-banner"><span>구경 모드 · 마그넷을 눌러 안에 담긴 링크나 메모를 열어보세요</span><button class="button icon" id="exitPreview" aria-label="편집 화면으로 돌아가기">×</button></div>
+    <main class="layout">
+      <section class="library-dock editor-only">
+        <div class="library-tabs" role="tablist"><button class="tab active" data-tab="letters">알파벳</button><button class="tab" data-tab="objects">오브제</button><button class="tab" data-tab="photos">사진</button><button class="tab" data-tab="cities">여행</button></div>
+        <section class="library-panel active" id="panel-letters"><p class="hint">알파벳 마그넷으로 이름이나 좋아하는 단어를 만들어봐요.</p><div class="letter-grid" id="letterGrid"></div></section>
+        <section class="library-panel" id="panel-objects"><p class="hint">마음에 드는 물건을 눌러 냉장고에 붙여보세요.</p><div class="object-grid" id="objectGrid"></div><button class="button full" id="addNote">＋ 포스트잇 메모</button></section>
+        <section class="library-panel" id="panel-photos"><p class="hint">내 사진을 마그넷이나 인화 사진으로 바꿔 붙여요.</p><label class="upload-zone" for="photoInput"><p>사진을 선택하면<br>마그넷 모양을 고를 수 있어요</p><span class="button inline">갤러리 열기</span></label><input id="photoInput" type="file" accept="image/*" hidden></section>
+        <section class="library-panel" id="panel-cities"><p class="hint">다녀온 도시의 기념품 마그넷을 골라봐요.</p><div class="city-form"><input id="cityInput" class="text-input" maxlength="18" placeholder="도시 이름"><button id="addCity" class="tiny-add" aria-label="도시 마그넷 추가">+</button></div><div id="cityGrid"></div></section>
+      </section>
+      <section class="stage"><div class="canvas-wrap" id="canvas"><div class="fridge" id="fridge"></div></div><div class="empty-tip editor-only" id="dropHint">✳<strong>냉장고를 꾸며봐요</strong><span>아래 마그넷을 눌러 냉장고에 붙여보세요</span></div></section>
+      <aside class="side-right editor-only"><p class="section-label">마그넷에 담기</p><h2 class="panel-title">무엇과 연결할까요?</h2><p class="panel-sub">마그넷을 선택해 링크나 메모를 연결해요. 연결 없이 장식으로만 둘 수도 있어요.</p><div id="inspector"><div class="inspector-empty"><div><span>✳</span>냉장고 위 마그넷을 눌러<br>연결할 링크나 메모를 설정해요.</div></div></div><div class="save-note">완성한 냉장고는 브라우저에 자동 저장돼요.<br>공유 링크로 친구에게 보여줄 수 있어요.</div></aside>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="photoModal"><div class="modal"><div class="modal-head"><div><h2>사진을 붙여봐요</h2><p>어떤 모양의 마그넷으로 만들까요?</p></div><button class="modal-close" data-close="photoModal">×</button></div><img id="photoPreview" class="photo-preview" alt="업로드한 사진 미리보기"><div class="style-choices"><button class="style-choice active" data-style="photo"><strong>사진 마그넷</strong><span>프레임 없이 유광 코팅</span></button><button class="style-choice" data-style="polaroid"><strong>인화 사진</strong><span>흰 프레임을 둘러서</span></button></div><div class="modal-actions"><button class="button" data-close="photoModal">취소</button><button class="button dark" id="placePhoto">냉장고에 붙이기</button></div></div></div>
+  <div class="modal-backdrop" id="shareModal"><div class="modal"><div class="modal-head"><div><h2>친구에게 보여주기</h2><p>링크를 열면 방문자 모드로 냉장고를 구경할 수 있어요.</p></div><button class="modal-close" data-close="shareModal">×</button></div><p class="share-copy">완성된 배치와 연결을 공유 링크에 담았어요. 사진을 많이 올렸다면 링크가 길어질 수 있어요.</p><textarea class="text-area modal-url" id="shareUrl" readonly></textarea><div class="modal-actions"><button class="button" data-close="shareModal">닫기</button><button class="button dark" id="copyShare">링크 복사</button></div></div></div>
+  <div class="visitor-card" id="visitorCard"><button class="close-card" id="closeVisitorCard">×</button><h3 id="visitorTitle"></h3><p id="visitorText"></p><a class="button dark" id="visitorLink" target="_blank" rel="noopener noreferrer">연결된 곳 열기 ↗</a></div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
